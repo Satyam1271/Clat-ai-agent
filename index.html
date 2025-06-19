@@ -75,3 +75,84 @@
   </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CLAT AI Agent</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background-color: #222;
+      padding: 30px;
+      border-radius: 8px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      background-color: #00c7a4;
+      color: #fff;
+      cursor: pointer;
+    }
+    .response {
+      margin-top: 20px;
+      padding: 15px;
+      background: #333;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CLAT AI Agent</h1>
+    <input id="userInput" type="text" placeholder="Ask a CLAT-related question..." />
+    <button onclick="askQuestion()">Ask</button>
+    <div id="response" class="response"></div>
+  </div>
+
+  <script>
+    async function askQuestion() {
+      const input = document.getElementById("userInput").value;
+      const responseDiv = document.getElementById("response");
+
+      responseDiv.innerHTML = "Thinking...";
+
+      const apiKey = "YOUR_OPENAI_API_KEY"; // Replace with your key
+
+      const result = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: input }],
+          max_tokens: 100
+        })
+      });
+
+      const data = await result.json();
+      responseDiv.innerHTML = data.choices[0].message.content;
+    }
+  </script>
+</body>
+</html>
+
